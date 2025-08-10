@@ -1,0 +1,103 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+*.out
+
+# Delta Lake data (production data)
+Delta_lake/dados/bronze/
+Delta_lake/dados/silver/
+Delta_lake/dados/gold/
+
+# Landing Zone data (customer data - keep structure but not files)
+Landing_zone/data/raw/*
+!Landing_zone/data/raw/.gitkeep
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Docker
+.dockerignore
+
+# Secrets and config
+.env
+.env.local
+.env.production
+config/secrets/
+*.key
+*.pem
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.backup
+*.bak
+
+# Large files
+*.xlsx
+*.xls
+*.csv
+*.parquet
+*.json
+!**/example_*.json
+!**/test_*.json

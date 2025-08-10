@@ -1,0 +1,43 @@
+FROM python:3.11-slim
+
+# Metadados
+LABEL maintainer="Data Engineer"
+LABEL description="Delta Lake Processing Container"
+
+# Instala dependências do sistema
+RUN apt-get update && apt-get install -y \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instala uv
+RUN pip install uv
+
+# Define diretório de trabalho
+WORKDIR /app
+
+# Copia arquivos de configuração
+COPY Delta_lake/pyproject.toml Delta_lake/requirements.txt ./
+
+# Instala dependências Python
+RUN uv pip install --system -r requirements.txt
+
+# Copia código fonte
+COPY Delta_lake/ ./
+
+# Cria diretórios necessários
+RUN mkdir -p dados/bronze dados/silver dados/gold logs
+
+# Define variáveis de ambiente
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+# Expõe porta para health checks
+EXPOSE 8001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD python -c "from processamento.data_processor import DataProcessor; print('healthy')" || exit 1
+
+# Comando padrão: roda o file watcher
+CMD ["python", "scripts/run_processor.py"]

@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # FastAPI - Landing Zone API
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: delta-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Landing_zone:/data/landing_zone
+      - ./Delta_lake/logs:/app/logs
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - API_KEY=seu_api_key_secreto_aqui
+    networks:
+      - delta-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # Delta Lake Processing
+  delta-processor:
+    build:
+      context: .
+      dockerfile: Dockerfile.delta
+    container_name: delta-processor
+    depends_on:
+      - api
+    volumes:
+      - ./Landing_zone:/data/landing_zone
+      - ./Delta_lake/dados:/app/dados
+      - ./Delta_lake/logs:/app/logs
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+    networks:
+      - delta-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "from processamento.data_processor import DataProcessor; print('healthy')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  delta-network:
+    driver: bridge
+
+volumes:
+  bronze_data:
+    driver: local
+  silver_data:
+    driver: local
+  gold_data:
+    driver: local

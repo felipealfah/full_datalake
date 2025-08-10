@@ -1,0 +1,33 @@
+# Web API (Porteiro)
+fastapi
+uvicorn[standard]
+
+# Processamento de Dados
+polars[excel]  # Inclui suporte para Excel
+duckdb
+pandas  # Fallback para Excel complexos
+openpyxl  # Engine para Excel
+xlrd  # Suporte para .xls antigos
+
+# Delta Lake (nativo Python/Rust)
+deltalake
+pyarrow  # Backend para Delta Lake
+
+# File System Monitoring
+watchdog  # Cross-platform file watcher
+
+# APIs externas
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+requests
+
+# Análise e Notebooks
+jupyter
+notebook
+matplotlib
+seaborn
+
+# Utilitários
+python-dotenv
+pydantic 
